@@ -1,5 +1,7 @@
 # BlackForge
 
+[![CI](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml/badge.svg)](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml)
+
 BlackForge is a local-first project scaffolding tool for developers. It creates
 clean starter projects from reusable templates.
 
