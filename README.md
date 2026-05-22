@@ -32,6 +32,16 @@ blackforge new fastapi my-api
 blackforge new python-package my-package
 ```
 
+## Screenshots
+
+### `blackforge list-templates`
+
+![blackforge list-templates screenshot](docs/screenshots/list-templates.png)
+
+### `blackforge new fastapi demo-api`
+
+![blackforge new fastapi demo-api screenshot](docs/screenshots/new-fastapi-demo-api.png)
+
 ## Development
 
 Run tests:
