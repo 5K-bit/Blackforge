@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "name": "blackforge",
+  "component_type": "service",
+  "version": "0.3.0",
+  "entrypoint": "blackforge",
+  "interfaces": ["cli", "manifest-validation", "component-scaffolding"],
+  "capabilities": ["scaffold", "inspect", "validate", "doctor"],
+  "lifecycle": "on-demand",
+  "health": {"mode": "command", "command": "blackforge doctor ."},
+  "dependencies": [],
+  "source_repository": "5K-bit/Blackforge"
+}
