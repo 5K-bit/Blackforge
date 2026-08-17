@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "name": "{{ project_name }}",
+  "component": "event-consumer",
+  "version": "0.1.0",
+  "entrypoint": "{{ package_name }}.consumer:handle",
+  "interfaces": ["event"],
+  "generated_at": "{{ created_at }}"
+}
