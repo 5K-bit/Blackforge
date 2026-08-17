@@ -6,7 +6,12 @@ def test_list_templates_discovers_builtin_templates() -> None:
         "cli",
         "fastapi",
         "obeos-agent",
+        "obeos-connector",
+        "obeos-device",
+        "obeos-event-consumer",
+        "obeos-hud",
         "obeos-service",
         "obeos-skill",
+        "obeos-worker",
         "python-package",
     ]
