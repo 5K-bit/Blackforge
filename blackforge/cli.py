@@ -74,12 +74,12 @@ def inspect_command(path: Path = Path.cwd()) -> None:
     table = Table(title=f"OBEOS Component: {report.data.get('name', 'unknown')}")
     table.add_column("Field")
     table.add_column("Value")
-    for key in ("component", "version", "entrypoint", "schema_version"):
+    table.add_row("component_type", str(report.component_type or ""))
+    for key in ("version", "entrypoint", "schema_version"):
         table.add_row(key, str(report.data.get(key, "")))
     console.print(table)
-    if report.warnings:
-        for warning in report.warnings:
-            info(f"Warning: {warning}")
+    for warning in report.warnings:
+        info(f"Warning: {warning}")
     if not report.valid:
         for message in report.errors:
             error(message)
