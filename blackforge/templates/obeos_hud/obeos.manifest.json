@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "name": "{{ project_name }}",
+  "component": "hud",
+  "version": "0.1.0",
+  "entrypoint": "{{ package_name }}.app:app",
+  "interfaces": ["http", "ui"],
+  "health": "/health",
+  "generated_at": "{{ created_at }}"
+}
