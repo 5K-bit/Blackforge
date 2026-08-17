@@ -7,7 +7,7 @@ from typing import Any
 
 
 MANIFEST_NAME = "obeos.manifest.json"
-REQUIRED_FIELDS = {"schema_version", "name", "component", "version", "entrypoint"}
+REQUIRED_FIELDS = {"schema_version", "name", "version", "entrypoint"}
 ALLOWED_COMPONENTS = {
     "agent",
     "connector",
@@ -30,6 +30,11 @@ class ManifestReport:
     @property
     def valid(self) -> bool:
         return not self.errors
+
+    @property
+    def component_type(self) -> str | None:
+        value = self.data.get("component_type") or self.data.get("component")
+        return value if isinstance(value, str) else None
 
 
 def find_manifest(start: Path | None = None) -> Path:
@@ -59,12 +64,19 @@ def validate_manifest(path: Path) -> ManifestReport:
     if missing:
         errors.append(f"Missing required fields: {', '.join(missing)}")
 
-    component = data.get("component")
-    if component and component not in ALLOWED_COMPONENTS:
+    component = data.get("component_type") or data.get("component")
+    if component is None:
+        errors.append("Missing required field: component_type")
+    elif not isinstance(component, str):
+        errors.append("component_type must be a string.")
+    elif component not in ALLOWED_COMPONENTS:
         errors.append(
-            f"Unsupported component '{component}'. Expected one of: "
+            f"Unsupported component_type '{component}'. Expected one of: "
             f"{', '.join(sorted(ALLOWED_COMPONENTS))}"
         )
+
+    if "component" in data and "component_type" not in data:
+        warnings.append("Legacy field 'component' detected; use 'component_type' for new manifests.")
 
     entrypoint = data.get("entrypoint")
     if entrypoint and not isinstance(entrypoint, str):
