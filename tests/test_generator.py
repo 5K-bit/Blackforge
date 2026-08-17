@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -41,6 +42,33 @@ from blackforge.core.generator import GenerationError, generate_project
                 "my_package/__init__.py",
             ],
         ),
+        (
+            "obeos-service",
+            "sentinel-bridge",
+            [
+                "README.md",
+                "pyproject.toml",
+                "obeos.manifest.json",
+                "src/sentinel_bridge/main.py",
+                "tests/test_health.py",
+            ],
+        ),
+        (
+            "obeos-agent",
+            "research-agent",
+            [
+                "README.md",
+                "pyproject.toml",
+                "obeos.manifest.json",
+                "src/research_agent/agent.py",
+                "tests/test_agent.py",
+            ],
+        ),
+        (
+            "obeos-skill",
+            "weekly-review",
+            ["README.md", "obeos.manifest.json", "skill.md"],
+        ),
     ],
 )
 def test_generate_project_creates_required_files(
@@ -71,6 +99,17 @@ def test_fastapi_template_contains_health_route(tmp_path: Path) -> None:
     health_test = (result.destination / "tests/test_health.py").read_text(encoding="utf-8")
     assert '@app.get("/health")' in main_py
     assert 'client.get("/health")' in health_test
+
+
+def test_obeos_manifest_is_rendered(tmp_path: Path) -> None:
+    result = generate_project("obeos-service", "sentinel-bridge", output_dir=tmp_path)
+    manifest = json.loads(
+        (result.destination / "obeos.manifest.json").read_text(encoding="utf-8")
+    )
+    assert manifest["name"] == "sentinel-bridge"
+    assert manifest["package"] == "sentinel_bridge"
+    assert manifest["component_type"] == "service"
+    assert manifest["health"] == "/health"
 
 
 def test_generate_project_blocks_overwrite_without_force(tmp_path: Path) -> None:
