@@ -2,23 +2,22 @@
 
 [![CI](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml/badge.svg)](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml)
 
-BlackForge is a local-first development scaffolder for OBEOS and general Python projects. It turns repeatable architecture into reusable templates so new services, agents, skills, APIs, CLIs, and packages start with consistent structure instead of copied boilerplate.
+BlackForge is the local-first OBEOS development toolchain. It turns repeatable architecture into reusable, validated component scaffolds so new OBEOS software starts from a known contract instead of copied boilerplate.
 
-## OBEOS Development Kit
+## OBEOS component templates
 
-BlackForge now ships with OBEOS-aware component templates:
+- `obeos-service` — FastAPI service with health/readiness contracts and tests.
+- `obeos-agent` — bounded async agent request/result contract.
+- `obeos-skill` — load-on-demand Markdown skill contract.
+- `obeos-worker` — bounded background job processor.
+- `obeos-connector` — external-system integration boundary.
+- `obeos-device` — hardware/device adapter boundary.
+- `obeos-event-consumer` — explicit event-processing entrypoint.
+- `obeos-hud` — thin FastAPI UI/status surface.
 
-- `obeos-service` — installable FastAPI service with health/readiness endpoints, tests, and an OBEOS manifest.
-- `obeos-agent` — async agent contract with bounded request/result objects, tests, and an OBEOS manifest.
-- `obeos-skill` — Markdown skill contract with explicit purpose, trigger, inputs, outputs, failure behavior, and recovery.
+General templates remain available: `cli`, `fastapi`, and `python-package`.
 
-Generated OBEOS components include `obeos.manifest.json`. The manifest is the stable discovery boundary for future OBEOS registries, launchers, adapters, and orchestration without forcing generated projects to import the current DAISE internals.
-
-## General Templates
-
-- `cli`
-- `fastapi`
-- `python-package`
+Every OBEOS scaffold includes `obeos.manifest.json`, using schema version 1 and the canonical `component_type` field. The manifest is the stable discovery boundary for OBEOS registries, launchers, health tooling, and adapters without coupling generated components to DAISE internals.
 
 ## Installation
 
@@ -26,71 +25,66 @@ Generated OBEOS components include `obeos.manifest.json`. The manifest is the st
 pip install -e ".[dev]"
 ```
 
-## Usage
-
-List templates:
+## Create components
 
 ```bash
 blackforge list-templates
-```
-
-Create OBEOS components:
-
-```bash
 blackforge new obeos-service sentinel-bridge
 blackforge new obeos-agent research-agent
+blackforge new obeos-worker queue-worker
+blackforge new obeos-connector telegram-bridge
+blackforge new obeos-device mesh-node
+blackforge new obeos-event-consumer audit-consumer
+blackforge new obeos-hud legion-hud
 blackforge new obeos-skill weekly-review
 ```
 
-Create general projects:
-
-```bash
-blackforge new cli my-tool
-blackforge new fastapi my-api
-blackforge new python-package my-package
-```
-
-Use the generic creator for any installed template:
+The generic command works for every installed template:
 
 ```bash
 blackforge create TEMPLATE PROJECT_NAME
 ```
 
-Example:
+Preview a generation plan without touching disk:
 
 ```bash
-blackforge create obeos-agent planner-agent
+blackforge create obeos-agent planner-agent --preview
 ```
 
-Overwrite an existing destination only when intentional:
+BlackForge rejects path traversal and nested project-name paths. Existing destinations are protected unless `--force` is explicitly supplied.
+
+## Inspect and validate OBEOS components
+
+From a generated component:
 
 ```bash
-blackforge new obeos-agent planner-agent --force
+blackforge inspect .
+blackforge validate obeos.manifest.json
+blackforge doctor .
 ```
 
-## OBEOS Manifest Contract
+`inspect` discovers the nearest manifest by walking parent directories. `validate` checks the OBEOS manifest contract. `doctor` checks the local Python/tooling/component environment.
 
-Every OBEOS scaffold declares at least:
+## Manifest contract
 
-- schema version
-- component name and type
-- version
-- entrypoint
-- supported interfaces
-- generation timestamp
+Schema version 1 requires:
 
-Services additionally declare health and readiness endpoints. This gives OBEOS a machine-readable registration surface while keeping each component independently testable.
+- `schema_version`
+- `name`
+- `component_type`
+- `version`
+- `entrypoint`
+
+Components can additionally declare interfaces, package name, health/readiness endpoints, and generation metadata.
 
 ## Development
-
-Run tests:
 
 ```bash
 pytest
 ```
 
-The project targets Python 3.11+ and keeps runtime dependencies intentionally small.
+CI tests Python 3.11 and 3.12.
 
-## Direction
+## Source-of-truth policy
 
-BlackForge should become the standard creation path for new OBEOS components. Future templates can cover workers, event consumers, HUD panels, connectors, device nodes, and deployment bundles while preserving the same manifest-first contract.
+`5K-bit/Blackforge` is the canonical BlackForge repository. The `Blackforge` path inside the O.B.E.O.S. repository should reference this repository as a pinned Git submodule rather than maintain an independent copy. Changes belong here first; OBEOS then advances the pinned commit after BlackForge CI passes.
