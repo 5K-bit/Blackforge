@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "{{ project_name }}",
-  "component": "worker",
+  "component_type": "worker",
   "version": "0.1.0",
   "entrypoint": "{{ package_name }}.worker:run",
   "interfaces": ["job"],
