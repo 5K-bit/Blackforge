@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "name": "{{ project_name }}",
+  "package": "{{ package_name }}",
+  "component_type": "agent",
+  "version": "0.1.0",
+  "entrypoint": "{{ package_name }}.agent:Agent",
+  "interfaces": ["async-call"],
+  "generated_at": "{{ created_at }}"
+}

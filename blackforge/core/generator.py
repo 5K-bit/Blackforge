@@ -19,23 +19,40 @@ def _to_package_name(project_name: str) -> str:
     return package
 
 
+def _resolve_destination(destination_root: Path, project_name: str) -> Path:
+    if any(separator in project_name for separator in ("/", "\\")):
+        raise GenerationError("Project name must not contain path separators.")
+    if project_name.strip() in {"", ".", ".."}:
+        raise GenerationError("Project name must be a local folder name.")
+
+    root = destination_root.expanduser().resolve()
+    destination = (root / project_name).resolve()
+    try:
+        destination.relative_to(root)
+    except ValueError as exc:
+        raise GenerationError("Destination must stay inside the approved output directory.") from exc
+    return destination
+
+
 def generate_project(
     template_name: str,
     project_name: str,
     output_dir: Path | None = None,
     force: bool = False,
+    preview: bool = False,
 ) -> GenerationResult:
     destination_root = output_dir or Path.cwd()
-    destination = destination_root / project_name
+    destination = _resolve_destination(destination_root, project_name)
     template_key = resolve_template_name(template_name)
     template_dir = get_templates_dir() / template_key
 
-    if destination.exists() and not force:
+    if destination.exists() and not force and not preview:
         raise GenerationError(
             f"Destination '{destination}' already exists. Use --force to overwrite."
         )
 
-    destination.mkdir(parents=True, exist_ok=True)
+    if not preview:
+        destination.mkdir(parents=True, exist_ok=True)
 
     context = {
         "project_name": project_name,
@@ -53,15 +70,21 @@ def generate_project(
     for source in sorted(template_dir.rglob("*")):
         relative_path = source.relative_to(template_dir).as_posix()
         rendered_relative = env.from_string(relative_path).render(**context)
-        target = destination / rendered_relative
+        target = (destination / rendered_relative).resolve()
+        try:
+            target.relative_to(destination)
+        except ValueError as exc:
+            raise GenerationError(f"Template path escapes destination: {rendered_relative}") from exc
 
         if source.is_dir():
-            target.mkdir(parents=True, exist_ok=True)
+            if not preview:
+                target.mkdir(parents=True, exist_ok=True)
             continue
 
-        target.parent.mkdir(parents=True, exist_ok=True)
         rendered_content = env.get_template(relative_path).render(**context)
-        target.write_text(rendered_content, encoding="utf-8")
+        if not preview:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(rendered_content, encoding="utf-8")
         created_files.append(target.relative_to(destination))
 
     return GenerationResult(
@@ -69,4 +92,5 @@ def generate_project(
         project_name=project_name,
         destination=destination,
         created_files=created_files,
+        preview=preview,
     )

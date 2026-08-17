@@ -8,3 +8,4 @@ class GenerationResult:
     project_name: str
     destination: Path
     created_files: list[Path] = field(default_factory=list)
+    preview: bool = False

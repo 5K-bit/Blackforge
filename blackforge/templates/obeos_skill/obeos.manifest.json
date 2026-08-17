@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "name": "{{ project_name }}",
+  "component_type": "skill",
+  "version": "0.1.0",
+  "entrypoint": "skill.md",
+  "interfaces": ["markdown-skill"],
+  "generated_at": "{{ created_at }}"
+}

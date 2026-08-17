@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "{{ project_name }}",
+  "package": "{{ package_name }}",
+  "component_type": "service",
+  "version": "0.1.0",
+  "entrypoint": "{{ package_name }}.main:app",
+  "interfaces": ["http"],
+  "health": "/health",
+  "readiness": "/ready",
+  "generated_at": "{{ created_at }}"
+}
