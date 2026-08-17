@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "{{ project_name }}",
-  "component": "connector",
+  "component_type": "connector",
   "version": "0.1.0",
   "entrypoint": "{{ package_name }}.connector:connect",
   "interfaces": ["external-system"],
