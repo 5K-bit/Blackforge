@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 import re
+import keyword
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -14,8 +15,8 @@ class GenerationError(Exception):
 
 def _to_package_name(project_name: str) -> str:
     package = re.sub(r"[^a-zA-Z0-9]+", "_", project_name).strip("_").lower()
-    if not package:
-        raise GenerationError("Project name must contain letters or numbers.")
+    if not package or not package.isidentifier() or keyword.iskeyword(package):
+        raise GenerationError("Project name must form a valid Python package identifier (not a keyword or leading digit).")
     return package
 
 
@@ -51,12 +52,13 @@ def generate_project(
             f"Destination '{destination}' already exists. Use --force to overwrite."
         )
 
+    package_name = _to_package_name(project_name)
     if not preview:
         destination.mkdir(parents=True, exist_ok=True)
 
     context = {
         "project_name": project_name,
-        "package_name": _to_package_name(project_name),
+        "package_name": package_name,
         "created_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%SZ"),
     }
 
