@@ -85,6 +85,25 @@ pytest
 
 CI tests Python 3.11 and 3.12.
 
+## Contract evaluation suite
+
+`eval/run_eval.py` is a separately runnable evaluation suite, distinct from
+`pytest`: for every `obeos-*` template it generates a sample component and
+checks that the result actually conforms to the OBEOS manifest contract
+(`obeos.manifest.json` validity, `component_type` matching the template,
+`blackforge doctor`), not just that it builds. This is a scaffold/contract
+conformance check, not a benchmark of agent or model behavior.
+
+```bash
+python eval/run_eval.py                                   # all templates
+python eval/run_eval.py --templates obeos-service,obeos-worker
+python eval/run_eval.py --skip-build                       # skip the wheel build/import check
+python eval/run_eval.py --json report.json                 # also write a machine-readable report
+```
+
+Exits non-zero if any template fails any check, so it can be run in CI
+independently of the regular `pytest` job.
+
 ## Source-of-truth policy
 
 `5K-bit/Blackforge` is the canonical BlackForge repository. The `Blackforge` path inside the O.B.E.O.S. repository should reference this repository as a pinned Git submodule rather than maintain an independent copy. Changes belong here first; OBEOS then advances the pinned commit after BlackForge CI passes.
