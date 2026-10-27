@@ -1,4 +1,10 @@
+<div align="center">
+  <img src="assets/brand/github-banner.svg" alt="BlackForge — Local-first development toolchain" width="1200">
+</div>
+
 # BlackForge
+
+[Installation](#installation) · [Create components](#create-components) · [Manifest contract](#manifest-contract)
 
 [![CI](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml/badge.svg)](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml)
 
