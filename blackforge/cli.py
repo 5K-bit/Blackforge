@@ -2,6 +2,8 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+
+from .terminal_brand import PRODUCT, product_version, show_banner
 from rich.table import Table
 
 from blackforge.core.doctor import run_doctor
@@ -10,7 +12,7 @@ from blackforge.core.manifest import inspect_component, validate_manifest
 from blackforge.core.templates import list_templates
 from blackforge.ui.console import console, error, info, success
 
-app = typer.Typer(help="BlackForge: local-first OBEOS development toolchain.")
+app = typer.Typer(help="BlackForge: local-first OBEOS development toolchain. By Blackfong.")
 new_app = typer.Typer(help="Create a new project from a template.")
 app.add_typer(new_app, name="new")
 
@@ -145,6 +147,25 @@ for _template in (
     "obeos-worker",
 ):
     new_app.command(_template)(_project_command(_template))
+
+
+
+
+
+def _show_version(value: bool):
+    if value:
+        typer.echo(f"{PRODUCT} {product_version()}")
+        raise typer.Exit()
+
+
+@app.callback()
+def identity(
+    version: bool = typer.Option(False, "--version", callback=_show_version, is_eager=True, help="Print the installed product version."),
+    banner: bool = typer.Option(False, "--banner", help="Show the product banner on stderr, including in scripts."),
+    no_banner: bool = typer.Option(False, "--no-banner", help="Suppress the interactive startup banner."),
+):
+    if not no_banner:
+        show_banner(force=banner)
 
 
 if __name__ == "__main__":
