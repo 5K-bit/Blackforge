@@ -1,12 +1,23 @@
 <div align="center">
-  <img src="assets/brand/github-banner.svg" alt="BlackForge — Local-first development toolchain" width="1200">
+
+<img src="assets/brand/github-banner.svg" alt="BlackForge — Local-first development toolchain. A Blackfong project." width="1200">
+
+**Local-first development toolchain.**
+
+![Stage](https://img.shields.io/badge/stage-Component%20tooling-ffb36b?style=for-the-badge&labelColor=0c1220)
+[![CI](https://img.shields.io/github/actions/workflow/status/5K-bit/Blackforge/ci.yml?branch=main&style=for-the-badge&label=CI&labelColor=0c1220&color=ffb36b)](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml)
+
+[Installation](#installation) · [Create components](#create-components) · [Validation](#inspect-and-validate-obeos-components) · [Evaluation](#contract-evaluation-suite)
+
 </div>
+
+---
 
 # BlackForge
 
-[Installation](#installation) · [Create components](#create-components) · [Manifest contract](#manifest-contract)
-
-[![CI](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml/badge.svg)](https://github.com/5K-bit/Blackforge/actions/workflows/ci.yml)
+| Scaffold | Inspect | Validate |
+|---|---|---|
+| Services, agents, skills and workers | Manifest discovery and environment checks | Component contracts and evaluation suite |
 
 BlackForge is the local-first OBEOS development toolchain. It turns repeatable architecture into reusable, validated component scaffolds so new OBEOS software starts from a known contract instead of copied boilerplate.
 
