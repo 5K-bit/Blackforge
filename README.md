@@ -124,3 +124,7 @@ independently of the regular `pytest` job.
 ## Source-of-truth policy
 
 `5K-bit/Blackforge` is the canonical BlackForge repository. The `Blackforge` path inside the O.B.E.O.S. repository should reference this repository as a pinned Git submodule rather than maintain an independent copy. Changes belong here first; OBEOS then advances the pinned commit after BlackForge CI passes.
+
+## Terminal identity
+
+`blackforge --version` prints the installed version (source version when running an uninstalled checkout). Help identifies BlackForge as a Blackfong project. Interactive commands display a compact product banner on stderr; automatic banners are suppressed when either output stream is redirected. Use `--no-banner` to suppress it or `--banner` before a subcommand to request it explicitly. `NO_COLOR` and `TERM=dumb` disable banner colors. Command output, exit codes, and operational status labels retain their meaning.
