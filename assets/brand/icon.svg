@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="t">
+  <title id="t">BlackForge icon</title>
+  <rect width="256" height="256" rx="56" fill="#0c1220"/>
+  <rect x="6" y="6" width="244" height="244" rx="50" fill="none" stroke="#ffb36b" stroke-opacity=".35" stroke-width="4"/>
+  <g transform="translate(34.53 26.74) scale(0.7789)" fill="none" stroke="#ffb36b" stroke-width="12.84" stroke-linecap="round" stroke-linejoin="round"><path d="m90 55-65 65 65 65m60-130 65 65-65 65M135 40l-30 160"/><path d="M70 220h100"/></g>
+</svg>
