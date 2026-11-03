@@ -56,7 +56,33 @@ blackforge new obeos-hud legion-hud
 blackforge new obeos-skill weekly-review
 ```
 
-The generic command works for every installed template:
+## Example output
+
+Recorded from the current CLI (`--no-banner`, 2026-11-02):
+
+```text
+$ blackforge list-templates
+  Available Templates
+┏━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Template             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━┩
+│ cli                  │
+│ fastapi              │
+│ obeos-agent          │
+│ obeos-connector      │
+│ obeos-device         │
+│ obeos-event-consumer │
+│ obeos-hud            │
+│ obeos-service        │
+│ obeos-skill          │
+│ obeos-worker         │
+│ python-package       │
+└──────────────────────┘
+
+$ blackforge new fastapi demo-api
+Created 'demo-api' from template 'fastapi' at demo-api
+Generated 6 files.
+```
 
 ```bash
 blackforge create TEMPLATE PROJECT_NAME
@@ -128,3 +154,13 @@ independently of the regular `pytest` job.
 ## Terminal identity
 
 `blackforge --version` prints the installed version (source version when running an uninstalled checkout). Help identifies BlackForge as a Blackfong project. Interactive commands display a compact product banner on stderr; automatic banners are suppressed when either output stream is redirected. Use `--no-banner` to suppress it or `--banner` before a subcommand to request it explicitly. `NO_COLOR` and `TERM=dumb` disable banner colors. Command output, exit codes, and operational status labels retain their meaning.
+
+## Licence
+
+Apache-2.0. See [LICENSE](LICENSE).
+
+## AI assistance
+
+AI tools assist with implementation, debugging, tests, and documentation.
+
+Louis Boddie owns project direction and acceptance decisions; linked tests and release evidence document what has been verified.
